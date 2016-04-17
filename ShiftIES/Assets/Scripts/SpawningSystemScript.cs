@@ -4,7 +4,8 @@ using System.Collections;
 public class SpawningSystemScript : MonoBehaviour {
 
 	public GameObject unit1;
-	public Camera cam;
+	public GameObject Enemy;
+  public Camera cam;
 	private GameObject unit1Clone;
 	//private GameObject formation;
 
@@ -25,7 +26,13 @@ public class SpawningSystemScript : MonoBehaviour {
 			Vector3 mouseScreenPos = cam.ScreenToWorldPoint(Input.mousePosition);
 			CreateUnit(unit1, new Vector2(mouseScreenPos.x, mouseScreenPos.y));
 		}
-	}
+
+    if (Input.GetMouseButtonDown(1))
+    {
+      Vector3 mouseScreenPos = cam.ScreenToWorldPoint(Input.mousePosition);
+      CreateUnit(Enemy, new Vector2(mouseScreenPos.x, mouseScreenPos.y));
+    }
+  }
 
 	void CreateUnit(GameObject go, Vector2 position)
 	{
