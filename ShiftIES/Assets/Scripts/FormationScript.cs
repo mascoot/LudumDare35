@@ -34,11 +34,11 @@ public class FormationScript : MonoBehaviour {
 			int numberOfCols = ((width / singleUnitSize.x) < 1) ? 1 : Mathf.FloorToInt(width / singleUnitSize.x);
 			numberOfRows = (numberOfUnits < numberOfCols) ? 1 : numberOfRows;
 			numberOfCols = (numberOfUnits < numberOfCols) ? numberOfUnits : numberOfCols;
-			print("(numberOfUnits/numberOfRows): " + ((float)numberOfUnits / numberOfRows));
-			print("numberOfCols: " + numberOfCols);
+			//print("(numberOfUnits/numberOfRows): " + ((float)numberOfUnits / numberOfRows));
+			//print("numberOfCols: " + numberOfCols);
 			numberOfCols = (Mathf.CeilToInt((float)(numberOfUnits)/numberOfRows) > numberOfCols) ? Mathf.CeilToInt((float)(numberOfUnits)/numberOfRows) : numberOfCols;
-			print("numberOfRows: " + numberOfRows);
-			print("numberOfCols: " + numberOfCols);
+			//print("numberOfRows: " + numberOfRows);
+			//print("numberOfCols: " + numberOfCols);
 
 			float distanceBetweenWidth = width / (numberOfCols + bufferForSpace);
 			float distanceBetweenHeight = height / (numberOfRows + bufferForSpace);
