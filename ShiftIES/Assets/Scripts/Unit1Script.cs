@@ -42,6 +42,6 @@ public class Unit1Script : MonoBehaviour {
   void FireBullet(Transform trans)
   {
     GameObject tmp = Instantiate(bullet, trans.position, Quaternion.identity) as GameObject;
-    tmp.GetComponent<Rigidbody2D>().AddForce(Vector3.up * bulletSpeed);
+    tmp.GetComponent<Rigidbody2D>().AddForce(formation.transform.forward * bulletSpeed);
   }
 }
