@@ -103,6 +103,7 @@ public class FormationScript : MonoBehaviour {
 						if (numberOfRows > 1) finalPos2D -= (((float)numberOfRows - 1.0f) / 2.0f) * distanceBetweenHeight * forwardVec;
 
 						units[(i * numberOfCols) + j].GetComponent<Unit1Script>().positionToGo = transform.position + new Vector3(finalPos2D.x, finalPos2D.y, 0);
+						//units[(i * numberOfCols) + j].GetComponent<Animator>().Play("walk");
 					}
 				}
 			}

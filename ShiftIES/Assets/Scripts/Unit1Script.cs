@@ -12,28 +12,30 @@ public class Unit1Script : MonoBehaviour {
 	private Animator anim;
 	private GameObject formation;
   private float firingInterval = 0.0f;
-	private int idleHash = Animator.StringToHash("idle");
-	private int walkHash = Animator.StringToHash("walk");
+	private int idleHash;
+	private int walkHash;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
 		formation = GameObject.Find("Formation");
-  }
-	
+	}
+
+	void Awake (){
+		//idleHash = Animator.StringToHash("idle");
+		//walkHash = Animator.StringToHash("walk");
+	}
+
 	// Update is called once per frame
 	void Update () {
 		Vector3 moveVec3 = positionToGo - transform.position;
 		Vector2 moveVec2 = new Vector2(moveVec3.x, moveVec3.y);
-		if (moveVec2.magnitude > 1.0f)
-		{
-			moveVec2.Normalize();
-			anim.SetTrigger(walkHash);
-		}
-		else
-		{
-			anim.SetTrigger(idleHash);
-		}
+
+		// MAGIC NUMBER!
+		if(moveVec2.magnitude > 0.1f) anim.Play("walk");
+		else anim.Play("Idle");
+
+		if (moveVec2.magnitude > 1.0f) moveVec2.Normalize();
 		Vector3 finalMovement = new Vector3(moveVec2.x, moveVec2.y) * speedOfMovement;
 		transform.position += finalMovement;
 
