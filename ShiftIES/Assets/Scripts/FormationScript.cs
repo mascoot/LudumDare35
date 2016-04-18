@@ -5,18 +5,21 @@ public class FormationScript : MonoBehaviour {
 
 	public float movementSpeed;
 	public float rotationSpeed;
-	public float scalingSpeed;
-	public float maximumXScale;
-	public float minimumXScale;
-	public float maximumYScale;
-	public float minimumYScale;
-	public Vector2 singleUnitSize;
+	private float maximumXScale;
+	private float minimumXScale;
+	private float maximumYScale;
+	private float minimumYScale;
+	private Vector2 singleUnitSize;
 	public GameObject[] units;
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+		singleUnitSize = new Vector2(1, 1);
+		maximumXScale = 1;
+		minimumXScale = 1;
+		maximumYScale = 1;
+		minimumYScale = 1;
+}
 	
 	// Update is called once per frame
 	void Update () {
