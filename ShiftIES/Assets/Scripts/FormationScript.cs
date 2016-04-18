@@ -15,8 +15,12 @@ public class FormationScript : MonoBehaviour {
 	private Vector2 singleUnitSize;
 	public GameObject[] units;
 
-	// Use this for initialization
-	void Start () {
+  public float bulletSpeed = 500.0f;
+  public float firingDelay = 2.0f;
+  private float firingInterval = 0.0f;
+
+  // Use this for initialization
+  void Start () {
 		rb = GetComponent<Rigidbody2D>();
 		singleUnitSize = new Vector2(1, 1);
 		maximumXScale = 1;
@@ -25,13 +29,20 @@ public class FormationScript : MonoBehaviour {
 		minimumYScale = 1;
 		currentXScale = minimumXScale;
 		currentYScale = minimumYScale;
+
+    firingInterval = firingDelay;
 }
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateMovement();
+    firingInterval -= Time.deltaTime;
+
+    UpdateMovement();
 		UpdateFormationRectangle();
-	}
+
+    if (firingInterval < 0.0f)
+      firingInterval = firingDelay;
+  }
 
 	void UpdateMovement()
 	{
@@ -121,7 +132,10 @@ public class FormationScript : MonoBehaviour {
 						if (numberOfRows > 1) finalPos2D -= (((float)numberOfRows - 1.0f) / 2.0f) * distanceBetweenHeight * forwardVec;
 
 						units[(i * numberOfCols) + j].GetComponent<Unit1Script>().positionToGo = transform.position + new Vector3(finalPos2D.x, finalPos2D.y, 0);
-					}
+            if (firingInterval < 0.0f)
+              units[(i * numberOfCols) + j].GetComponent<Unit1Script>().FireForEffect(bulletSpeed);
+
+          }
 				}
 			}
 		}

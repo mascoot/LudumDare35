@@ -6,13 +6,11 @@ public class Unit1Script : MonoBehaviour {
 	public Vector3 positionToGo;
 	public float speedOfMovement;
   public GameObject bullet;
-  public float bulletSpeed = 10.0f;
-  public float firingSpeed = 2.0f;
 
-	private Animator anim;
+  private Animator anim;
 	private SpriteRenderer sr;
 	private GameObject formation;
-  private float firingInterval = 0.0f;
+  
 	private int idleHash;
 	private int walkHash;
 
@@ -43,21 +41,14 @@ public class Unit1Script : MonoBehaviour {
 		if (moveVec2.magnitude > 1.0f) moveVec2.Normalize();
 		Vector3 finalMovement = new Vector3(moveVec2.x, moveVec2.y) * speedOfMovement * Time.deltaTime;
 		transform.position += finalMovement;
-
-    FireForEffect();
   }
 
-  void FireForEffect()
+  public void FireForEffect(float bulletSpeed)
   {
-    firingInterval -= Time.deltaTime;
-    if(firingInterval <= 0.0f)
-    {
-      FireBullet(transform);
-      firingInterval = firingSpeed;
-    }
+      FireBullet(transform, bulletSpeed);
   }
 
-  void FireBullet(Transform trans)
+  void FireBullet(Transform trans, float bulletSpeed)
   {
     GameObject tmp = Instantiate(bullet, trans.position, Quaternion.Euler(0,0, formation.transform.localRotation.eulerAngles.z)) as GameObject;
     tmp.GetComponent<Rigidbody2D>().AddForce(formation.transform.right * bulletSpeed);
