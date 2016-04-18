@@ -69,6 +69,7 @@ public class FormationScript : MonoBehaviour {
 	{
 		units = GameObject.FindGameObjectsWithTag("PlayerUnit");
 		int numberOfUnits = units.Length;
+		print(numberOfUnits);
 
 		if(numberOfUnits > 0)
 		{
@@ -93,7 +94,7 @@ public class FormationScript : MonoBehaviour {
 			{
 				for (int j = 0; j < numberOfCols; ++j)
 				{
-					if((i * numberOfCols) + j < units.Length)
+					if(((i * numberOfCols) + j) < numberOfUnits)
 					{
 						Vector2 finalPos2D = new Vector2();
 						finalPos2D += j * rightVec * distanceBetweenWidth;
@@ -103,7 +104,6 @@ public class FormationScript : MonoBehaviour {
 						if (numberOfRows > 1) finalPos2D -= (((float)numberOfRows - 1.0f) / 2.0f) * distanceBetweenHeight * forwardVec;
 
 						units[(i * numberOfCols) + j].GetComponent<Unit1Script>().positionToGo = transform.position + new Vector3(finalPos2D.x, finalPos2D.y, 0);
-						//units[(i * numberOfCols) + j].GetComponent<Animator>().Play("walk");
 					}
 				}
 			}

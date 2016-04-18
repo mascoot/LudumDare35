@@ -43,7 +43,7 @@ public class Unit1Script : MonoBehaviour {
 
 		
 		if (moveVec2.magnitude > 1.0f) moveVec2.Normalize();
-		Vector3 finalMovement = new Vector3(moveVec2.x, moveVec2.y) * speedOfMovement;
+		Vector3 finalMovement = new Vector3(moveVec2.x, moveVec2.y) * speedOfMovement * Time.deltaTime;
 		transform.position += finalMovement;
 
     FireForEffect();
@@ -61,7 +61,7 @@ public class Unit1Script : MonoBehaviour {
 
   void FireBullet(Transform trans)
   {
-    GameObject tmp = Instantiate(bullet, trans.position, Quaternion.identity) as GameObject;
-    tmp.GetComponent<Rigidbody2D>().AddForce(formation.transform.up * bulletSpeed);
+    GameObject tmp = Instantiate(bullet, trans.position, Quaternion.Euler(0,0, formation.transform.localRotation.eulerAngles.z)) as GameObject;
+    tmp.GetComponent<Rigidbody2D>().AddForce(formation.transform.right * bulletSpeed);
   }
 }
