@@ -7,9 +7,12 @@ public class CameraScript: MonoBehaviour {
   public GameObject player;
   public float lockX;
   public float lockY;
-	void Start () {
-	
-	}
+
+  public GameObject Formation;
+
+  void Start () {
+    
+  }
 	
 	// Update is called once per frame
 	void Update () {
@@ -35,6 +38,11 @@ public class CameraScript: MonoBehaviour {
       //transform.position.Set(newPos.x, newPos.y, newPos.z);
       locked = true;
     }
+
+    Vector2 maxScale = Formation.GetComponent<FormationScript>().GetMaxScale();
+    int zoomLvl = Mathf.FloorToInt(maxScale.magnitude / 1.5f) + 3;
+    int orthoSize = Mathf.Max(5, zoomLvl);
+    this.GetComponent<Camera>().orthographicSize = orthoSize;
 
     //print(newPos);
     transform.position = newPos;
