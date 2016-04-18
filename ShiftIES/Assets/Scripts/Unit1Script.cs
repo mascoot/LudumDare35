@@ -10,6 +10,7 @@ public class Unit1Script : MonoBehaviour {
   public float firingSpeed = 2.0f;
 
 	private Animator anim;
+	private SpriteRenderer sr;
 	private GameObject formation;
   private float firingInterval = 0.0f;
 	private int idleHash;
@@ -18,6 +19,7 @@ public class Unit1Script : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator>();
+		sr = GetComponent<SpriteRenderer>();
 		formation = GameObject.Find("Formation");
 	}
 
@@ -35,6 +37,11 @@ public class Unit1Script : MonoBehaviour {
 		if(moveVec2.magnitude > 0.1f) anim.Play("walk");
 		else anim.Play("Idle");
 
+		if (moveVec2.x > 0.0001f) sr.flipX = false;
+		else if (moveVec2.x < -0.0001f) sr.flipX = true;
+		
+
+		
 		if (moveVec2.magnitude > 1.0f) moveVec2.Normalize();
 		Vector3 finalMovement = new Vector3(moveVec2.x, moveVec2.y) * speedOfMovement;
 		transform.position += finalMovement;
