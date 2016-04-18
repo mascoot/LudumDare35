@@ -38,7 +38,7 @@ public class Unit1Script : MonoBehaviour {
 		if ((!isRangeAnim)  || (isRangeAnim && anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f))
 		{
 			// MAGIC NUMBER!
-			print(moveVec2.magnitude);
+			//print(moveVec2.magnitude);
 			if (moveVec2.magnitude > speedToQualifyAsRun) anim.Play("walk");
 			else anim.Play("Idle");
 
