@@ -25,8 +25,8 @@ public class EnemyScript : MonoBehaviour {
 		sr = GetComponent<SpriteRenderer>();
     GM = GameObject.Find("GameManager");
 		//formation = GameObject.Find("Formation");
-    
-    //GetComponent<ParticleEmitter>().play
+
+    //GetComponent<ParticleSystem>()
 	}
 	
 	// Update is called once per frame
@@ -58,12 +58,15 @@ public class EnemyScript : MonoBehaviour {
     {
       Instantiate(unit, gameObject.transform.position, Quaternion.identity);
       ES.GetComponent<EnemySpawnScript>().KillEnemy();
+      
       Destroy(this.gameObject);
       return;
     }
 
     if(coll.gameObject.tag == "PlayerBox")
     {
+      //GetComponent<ParticleEmitter>().enabled = true;
+      //GetComponent<ParticleEmitter>().emit = true;
       Formation.GetComponent<FormationScript>().KillUnits(0.33f);
       ES.GetComponent<EnemySpawnScript>().KillEnemy();
       Destroy(this.gameObject);
