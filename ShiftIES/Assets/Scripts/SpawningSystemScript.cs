@@ -6,7 +6,7 @@ public class SpawningSystemScript : MonoBehaviour {
 	public GameObject unit1;
 	public GameObject Enemy;
   public Camera cam;
-	private GameObject unit1Clone;
+	//private GameObject unit1Clone;
 	//private GameObject formation;
 
 	// Use this for initialization
@@ -36,7 +36,8 @@ public class SpawningSystemScript : MonoBehaviour {
 
 	void CreateUnit(GameObject go, Vector2 position)
 	{
-		unit1Clone = Instantiate(go, position, Quaternion.identity) as GameObject;
+		Instantiate(go, position, Quaternion.identity);
+		//unit1Clone = Instantiate(go, position, Quaternion.identity) as GameObject;
 		//unit1Clone.transform.parent = formation.transform;
 	}
 }

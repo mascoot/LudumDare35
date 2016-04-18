@@ -46,22 +46,22 @@ public class FormationScript : MonoBehaviour {
 			transform.position += (-forwardVec * movementSpeed * Time.deltaTime);
 		}
 
-		if(Input.GetKey(KeyCode.UpArrow))
+		if(Input.GetKeyDown(KeyCode.UpArrow))
 		{
-			if(transform.localScale.y < maximumYScale) transform.localScale += (Vector3.up * scalingSpeed * Time.deltaTime);
+			if (transform.localScale.y < maximumYScale) transform.localScale += Vector3.up;
 		}
-		else if(Input.GetKey(KeyCode.DownArrow))
+		else if(Input.GetKeyDown(KeyCode.DownArrow))
 		{
-			if (transform.localScale.y > minimumYScale) transform.localScale += (-Vector3.up * scalingSpeed * Time.deltaTime);
+			if (transform.localScale.y > minimumYScale) transform.localScale += -Vector3.up;
 		}
 
-		if (Input.GetKey(KeyCode.RightArrow))
+		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			if (transform.localScale.x < maximumXScale) transform.localScale += (Vector3.right * scalingSpeed * Time.deltaTime);
+			if (transform.localScale.x < maximumXScale) transform.localScale += Vector3.right;
 		}
-		else if (Input.GetKey(KeyCode.LeftArrow))
+		else if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
-			if (transform.localScale.x > minimumXScale) transform.localScale += (-Vector3.right * scalingSpeed * Time.deltaTime);
+			if (transform.localScale.x > minimumXScale) transform.localScale += -Vector3.right;
 		}
 	}
 
@@ -69,15 +69,13 @@ public class FormationScript : MonoBehaviour {
 	{
 		units = GameObject.FindGameObjectsWithTag("PlayerUnit");
 		int numberOfUnits = units.Length;
-		print(numberOfUnits);
+		maximumXScale = maximumYScale = Mathf.Ceil(Mathf.Sqrt(numberOfUnits));
 
 		if(numberOfUnits > 0)
 		{
 			int bufferForSpace = 1;
-			int numberOfPoints = numberOfUnits + bufferForSpace;
 			float width = transform.localScale.x;
 			float height = transform.localScale.y;
-			float totalLength = width + height;
 
 			int numberOfRows = ((height / singleUnitSize.y) < singleUnitSize.y) ? 1 : Mathf.FloorToInt(height / singleUnitSize.y);
 			int numberOfCols = ((width / singleUnitSize.x) < singleUnitSize.x) ? 1 : Mathf.FloorToInt(width / singleUnitSize.x);
