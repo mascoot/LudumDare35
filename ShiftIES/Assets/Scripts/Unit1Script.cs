@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class Unit1Script : MonoBehaviour {
-
 	public Vector3 positionToGo;
 	public float speedOfMovement;
   public GameObject bullet;

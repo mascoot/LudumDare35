@@ -3,6 +3,8 @@ using System.Collections;
 
 public class FormationScript : MonoBehaviour {
 
+	public AudioClip shoot;
+	private AudioSource audS;
 	public float movementSpeed;
 	public float rotationSpeed;
 	public float currentXScale;
@@ -21,6 +23,7 @@ public class FormationScript : MonoBehaviour {
 
   // Use this for initialization
   void Start () {
+		audS = GetComponent<AudioSource>();
 		rb = GetComponent<Rigidbody2D>();
 		singleUnitSize = new Vector2(1, 1);
 		maximumXScale = 1;
@@ -118,6 +121,11 @@ public class FormationScript : MonoBehaviour {
 			Vector2 forwardVec = new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
 			Vector2 rightVec = new Vector2(Mathf.Cos((transform.rotation.eulerAngles.z - 90) * Mathf.Deg2Rad), Mathf.Sin((transform.rotation.eulerAngles.z - 90) * Mathf.Deg2Rad));
 
+			if(numberOfUnits > 0 && firingInterval < 0.0f)
+			{
+				audS.PlayOneShot(shoot, 0.1f * Mathf.Clamp((0.1f * maximumYScale), 0.01f, 1.0f));
+			}
+
 			for (int i = 0; i < numberOfRows; ++i)
 			{
 				for (int j = 0; j < numberOfCols; ++j)
@@ -133,7 +141,10 @@ public class FormationScript : MonoBehaviour {
 
 						units[(i * numberOfCols) + j].GetComponent<Unit1Script>().positionToGo = transform.position + new Vector3(finalPos2D.x, finalPos2D.y, 0);
             if (firingInterval < 0.0f)
-              units[(i * numberOfCols) + j].GetComponent<Unit1Script>().FireForEffect(bulletSpeed);
+						{
+							units[(i * numberOfCols) + j].GetComponent<Unit1Script>().FireForEffect(bulletSpeed);
+						}
+              
 
           }
 				}
