@@ -22,4 +22,10 @@ public class BoxUIScript : MonoBehaviour {
 			formation.transform.localScale.x * scaleFactorX, 0.0f);
 		transform.rotation = formation.transform.rotation;
 	}
+
+
+  void OnCollisionEnter2D(Collision2D col)
+  {
+    //if (col.gameObject.tag == "Floor")
+  } 
 }
