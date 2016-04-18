@@ -40,8 +40,6 @@ public class Unit1Script : MonoBehaviour {
 		if (moveVec2.x > 0.0001f) sr.flipX = false;
 		else if (moveVec2.x < -0.0001f) sr.flipX = true;
 		
-
-		
 		if (moveVec2.magnitude > 1.0f) moveVec2.Normalize();
 		Vector3 finalMovement = new Vector3(moveVec2.x, moveVec2.y) * speedOfMovement * Time.deltaTime;
 		transform.position += finalMovement;

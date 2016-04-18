@@ -5,20 +5,26 @@ public class FormationScript : MonoBehaviour {
 
 	public float movementSpeed;
 	public float rotationSpeed;
+	public float currentXScale;
+	public float currentYScale;
 	private float maximumXScale;
 	private float minimumXScale;
 	private float maximumYScale;
 	private float minimumYScale;
+	private Rigidbody2D rb;
 	private Vector2 singleUnitSize;
 	public GameObject[] units;
 
 	// Use this for initialization
 	void Start () {
+		rb = GetComponent<Rigidbody2D>();
 		singleUnitSize = new Vector2(1, 1);
 		maximumXScale = 1;
 		minimumXScale = 1;
 		maximumYScale = 1;
 		minimumYScale = 1;
+		currentXScale = minimumXScale;
+		currentYScale = minimumYScale;
 }
 	
 	// Update is called once per frame
@@ -41,30 +47,38 @@ public class FormationScript : MonoBehaviour {
 		if(Input.GetKey(KeyCode.W))
 		{
 			Vector3 forwardVec = transform.rotation * Vector3.right;
-			transform.position += (forwardVec * movementSpeed * Time.deltaTime);
+			//transform.position += (forwardVec * movementSpeed * Time.deltaTime);
+			Vector2 totalForce = new Vector2(forwardVec.x, forwardVec.y);
+			rb.AddForce(totalForce * movementSpeed);
 		}
 		else if (Input.GetKey(KeyCode.S))
 		{
 			Vector3 forwardVec = transform.rotation * Vector3.right;
-			transform.position += (-forwardVec * movementSpeed * Time.deltaTime);
+			//transform.position += (-forwardVec * movementSpeed * Time.deltaTime);
+			Vector2 totalForce = new Vector2(-forwardVec.x, -forwardVec.y);
+			rb.AddForce(totalForce * movementSpeed);
 		}
 
 		if(Input.GetKeyDown(KeyCode.UpArrow))
 		{
-			if (transform.localScale.y < maximumYScale) transform.localScale += Vector3.up;
+			if (currentYScale < maximumYScale) currentYScale += 1.0f;
+			//if (transform.localScale.y < maximumYScale) transform.localScale += Vector3.up;
 		}
 		else if(Input.GetKeyDown(KeyCode.DownArrow))
 		{
-			if (transform.localScale.y > minimumYScale) transform.localScale += -Vector3.up;
+			if (currentYScale > minimumYScale) currentYScale -= 1.0f;
+			//if (transform.localScale.y > minimumYScale) transform.localScale += -Vector3.up;
 		}
 
 		if (Input.GetKeyDown(KeyCode.RightArrow))
 		{
-			if (transform.localScale.x < maximumXScale) transform.localScale += Vector3.right;
+			if (currentXScale < maximumXScale) currentXScale += 1.0f;
+			//if (transform.localScale.x < maximumXScale) transform.localScale += Vector3.right;
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftArrow))
 		{
-			if (transform.localScale.x > minimumXScale) transform.localScale += -Vector3.right;
+			if (currentXScale > minimumXScale) currentXScale -= 1.0f;
+			//if (transform.localScale.x > minimumXScale) transform.localScale += -Vector3.right;
 		}
 	}
 
@@ -77,8 +91,10 @@ public class FormationScript : MonoBehaviour {
 		if(numberOfUnits > 0)
 		{
 			int bufferForSpace = 1;
-			float width = transform.localScale.x;
-			float height = transform.localScale.y;
+			float width = currentXScale;
+			float height = currentYScale;
+			//float width = transform.localScale.x;
+			//float height = transform.localScale.y;
 
 			int numberOfRows = ((height / singleUnitSize.y) < singleUnitSize.y) ? 1 : Mathf.FloorToInt(height / singleUnitSize.y);
 			int numberOfCols = ((width / singleUnitSize.x) < singleUnitSize.x) ? 1 : Mathf.FloorToInt(width / singleUnitSize.x);
