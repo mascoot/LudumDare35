@@ -5,24 +5,29 @@ public class FormationScript : MonoBehaviour {
 
   public AudioClip shoot;
   private AudioSource audS;
-  public float movementSpeed;
-  public float rotationSpeed;
-  public float currentXScale;
-  public float currentYScale;
-  private float maximumXScale;
-  private float maximumYScale;
-  private float minimumXScale;
-  private float minimumYScale;
-  private Rigidbody2D rb;
-  private Vector2 singleUnitSize;
-  public GameObject[] units;
+	public float movementSpeed;
+	public float rotationSpeed;
+	public float currentXScale;
+	public float currentYScale;
+	private float maximumXScale;
+	private float minimumXScale;
+	private float maximumYScale;
+	private float minimumYScale;
+	private Rigidbody2D rb;
+	private Vector2 singleUnitSize;
+	public GameObject[] units;
+  public int numberOfUnits;
+  public int TopUnits;
   public float bulletSpeed = 500.0f;
   public float firingDelay = 2.0f;
   private float firingInterval = 0.0f;
+  private GameObject GM;
 
   // Use this for initialization
   void Start()
-  { 
+  {
+    numberOfUnits = 1;
+    TopUnits = 0;
     audS = GetComponent<AudioSource>();
     rb = GetComponent<Rigidbody2D>();
     singleUnitSize = new Vector2(1, 1);
@@ -34,7 +39,7 @@ public class FormationScript : MonoBehaviour {
     currentYScale = minimumYScale;
 
     firingInterval = firingDelay;
-    firingInterval = firingDelay;
+    GM = GameObject.Find("GameManager");
   }
 
   public Vector2 GetMaxScale()
@@ -44,6 +49,8 @@ public class FormationScript : MonoBehaviour {
   
   // Update is called once per frame
   void Update () {
+    if (GM.GetComponent<GameManagerScript>().IsPaused()) return;
+    
     firingInterval -= Time.deltaTime;
 
     UpdateMovement();
@@ -105,10 +112,11 @@ public class FormationScript : MonoBehaviour {
   void UpdateFormationRectangle()
   {
     units = GameObject.FindGameObjectsWithTag("PlayerUnit");
-    int numberOfUnits = units.Length;
+    numberOfUnits = units.Length;
+    if (TopUnits < numberOfUnits) TopUnits = numberOfUnits;
     maximumXScale = maximumYScale = Mathf.Ceil(Mathf.Sqrt(numberOfUnits));
 
-    if(numberOfUnits > 0)
+    if (numberOfUnits > 0)
     {
       int bufferForSpace = 1;
       float width = currentXScale;
@@ -120,14 +128,14 @@ public class FormationScript : MonoBehaviour {
       int numberOfCols = ((width / singleUnitSize.x) < singleUnitSize.x) ? 1 : Mathf.FloorToInt(width / singleUnitSize.x);
       numberOfRows = (numberOfCols < numberOfUnits) ? numberOfRows : 1;
       numberOfCols = (numberOfUnits < numberOfCols) ? numberOfUnits : numberOfCols;
-      numberOfCols = (Mathf.CeilToInt((float)(numberOfUnits)/numberOfRows) > numberOfCols) ? Mathf.CeilToInt((float)(numberOfUnits)/numberOfRows) : numberOfCols;
+      numberOfCols = (Mathf.CeilToInt((float)(numberOfUnits) / numberOfRows) > numberOfCols) ? Mathf.CeilToInt((float)(numberOfUnits) / numberOfRows) : numberOfCols;
       float distanceBetweenWidth = width / (numberOfCols + bufferForSpace);
       float distanceBetweenHeight = height / (numberOfRows + bufferForSpace);
 
       Vector2 forwardVec = new Vector2(Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
       Vector2 rightVec = new Vector2(Mathf.Cos((transform.rotation.eulerAngles.z - 90) * Mathf.Deg2Rad), Mathf.Sin((transform.rotation.eulerAngles.z - 90) * Mathf.Deg2Rad));
 
-      if(numberOfUnits > 0 && firingInterval < 0.0f)
+      if (numberOfUnits > 0 && firingInterval < 0.0f)
       {
         audS.PlayOneShot(shoot, 0.1f * Mathf.Clamp((0.1f * maximumYScale), 0.01f, 1.0f));
       }
@@ -136,7 +144,7 @@ public class FormationScript : MonoBehaviour {
       {
         for (int j = 0; j < numberOfCols; ++j)
         {
-          if(((i * numberOfCols) + j) < numberOfUnits)
+          if (((i * numberOfCols) + j) < numberOfUnits)
           {
             Vector2 finalPos2D = new Vector2();
             finalPos2D += j * rightVec * distanceBetweenWidth;
@@ -150,11 +158,31 @@ public class FormationScript : MonoBehaviour {
             {
               units[(i * numberOfCols) + j].GetComponent<Unit1Script>().FireForEffect(bulletSpeed);
             }
-              
-
           }
         }
       }
     }
+    else
+    {
+      GM.GetComponent<GameManagerScript>().SetGameLost();
+    }
+  }
+
+  public void KillUnits(float percentage)
+  {
+    units = GameObject.FindGameObjectsWithTag("PlayerUnit");
+
+    int numberOfUnitsToKill = (int)((float)units.Length * percentage);
+
+    if (units.Length < 5) numberOfUnitsToKill = units.Length;
+    for (int i = 0; i < numberOfUnitsToKill; ++i)
+    {
+      Destroy(units[i]);
+    }
+  }
+
+  public int GetTopScore()
+  {
+    return TopUnits;
   }
 }

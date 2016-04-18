@@ -5,7 +5,8 @@ public class EnemySpawnScript : MonoBehaviour {
 
 	// Use this for initialization
   public GameObject enemy1;
-  private int EnemyCount;
+  private GameObject GM;
+  public int EnemyCount;
   private int MaxEnemyCount;
   private float spawnInterval;
   private float spawnTimer;
@@ -15,12 +16,14 @@ public class EnemySpawnScript : MonoBehaviour {
 	void Start () {
     EnemyCount = 0;
     MaxEnemyCount = 5;
-    spawnInterval = 3.0f;
+    spawnInterval = 2.0f;
     spawnTimer = 0.0f;
+    GM = GameObject.Find("GameManager");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+    if (GM.GetComponent<GameManagerScript>().IsPaused()) return;
     spawnTimer += Time.deltaTime;
 
     if(EnemyCount < MaxEnemyCount && spawnTimer > spawnInterval)
@@ -61,5 +64,8 @@ public class EnemySpawnScript : MonoBehaviour {
     return spawnPos;
   }
 
-  
+  public void KillEnemy()
+  {
+    EnemyCount--;
+  }
 }
